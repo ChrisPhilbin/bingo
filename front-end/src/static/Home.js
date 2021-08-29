@@ -1,13 +1,12 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
+import BingoCard from "../components/game/BingoCard";
 
 const Home = () => {
   return (
     <div>
       <h3>Welcome to Meeting Bingo!</h3>
-      <Button variant="contained" color="primary">
-        Start a game
-      </Button>
+
+      <BingoCard />
     </div>
   );
 };
