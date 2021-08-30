@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -20,15 +20,19 @@ const useStyles = makeStyles({
   table: {
     maxWidth: 650,
   },
-  tableCell: {
+  tableCellNoMatch: {
     borderBottom: "none",
+  },
+  tableCellMatch: {
+    borderBottom: "none",
+    "background-color": "DarkCyan",
   },
 });
 
 const BingoCard = () => {
   const classes = useStyles();
 
-  let matches = [];
+  let [matches, setMatches] = useState([]);
 
   useEffect(() => {
     phrases.flat().forEach((word) => {
@@ -36,10 +40,11 @@ const BingoCard = () => {
         matches.push(word);
       }
     });
-  });
+  }, []);
 
   return (
     <div>
+      {console.log(matches, "matches")}
       <h3>Bingo card</h3>
 
       <Table className={classes.table} aria-label="simple table">
@@ -73,7 +78,11 @@ const BingoCard = () => {
               {row.map((item, index) => (
                 <TableCell
                   align="center"
-                  className={classes.tableCell}
+                  className={
+                    matches.includes(item)
+                      ? classes.tableCellMatch
+                      : classes.tableCellNoMatch
+                  }
                   key={index}
                 >
                   {item}
