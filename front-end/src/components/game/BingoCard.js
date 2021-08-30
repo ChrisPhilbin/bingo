@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -14,6 +14,8 @@ const phrases = [
   ["synergy", "reps", "1%", "trust", "recaps"],
 ];
 
+const called = ["synergy", "precall", "trust"];
+
 const useStyles = makeStyles({
   table: {
     maxWidth: 650,
@@ -25,6 +27,16 @@ const useStyles = makeStyles({
 
 const BingoCard = () => {
   const classes = useStyles();
+
+  let matches = [];
+
+  useEffect(() => {
+    phrases.flat().forEach((word) => {
+      if (called.includes(word)) {
+        matches.push(word);
+      }
+    });
+  });
 
   return (
     <div>
