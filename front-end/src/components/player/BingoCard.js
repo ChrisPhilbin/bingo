@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -14,7 +15,7 @@ const phrases = [
   ["synergy", "reps", "1%", "trust", "recaps"],
 ];
 
-const called = ["synergy", "precall", "trust"];
+const called = ["synergy", "precall research", "trust"];
 
 const useStyles = makeStyles({
   table: {
@@ -33,19 +34,28 @@ const BingoCard = () => {
   const classes = useStyles();
 
   let [matches, setMatches] = useState([]);
+  let [indexMatches, setIndexMatches] = useState([]);
 
-  useEffect(() => {
-    phrases.flat().forEach((word) => {
+  const findMatches = () => {
+    phrases.flat().forEach((word, index) => {
+      console.log(word, "current word");
       if (called.includes(word)) {
-        matches.push(word);
+        setMatches((matches) => [...matches, word]);
+        setIndexMatches((index) => [...indexMatches, index]);
+        //check to see if the card hits BINGO based on newly added index to index match arr
       }
     });
-  }, []);
+
+    console.log(matches, "matches");
+  };
 
   return (
     <div>
-      {console.log(matches, "matches")}
       <h3>Bingo card</h3>
+
+      <Button variant="contained" color="primary" onClick={() => findMatches()}>
+        Update
+      </Button>
 
       <Table className={classes.table} aria-label="simple table">
         <colgroup>
