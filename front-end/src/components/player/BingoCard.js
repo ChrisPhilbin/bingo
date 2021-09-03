@@ -5,7 +5,10 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
-import { Typography } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import checkForBingo from "../../hooks/checkForBingo";
+import useWindowSize from "../../hooks/useWindowSize";
+import Confetti from "react-confetti";
 
 const phrases = [
   ["synergy", "reps", "1%", "trust", "recaps"],
@@ -15,38 +18,60 @@ const phrases = [
   ["synergy", "reps", "1%", "trust", "recaps"],
 ];
 
-const called = ["synergy", "precall research", "trust"];
+const called = [
+  "synergy",
+  "precall research",
+  "trust",
+  "1%",
+  "metrics",
+  "recaps",
+];
 
 const useStyles = makeStyles({
   table: {
     maxWidth: 650,
+    margin: "auto",
   },
   tableCellNoMatch: {
     borderBottom: "none",
+    "background-color": "White",
+    borderRadius: 18,
   },
   tableCellMatch: {
     borderBottom: "none",
     "background-color": "DarkCyan",
+    borderRadius: 18,
+  },
+  bingoTitle: {
+    color: "white",
+    borderBottom: "none",
+  },
+  bingoFont: {
+    fontFamily: '"Permanent Marker", cursive',
   },
 });
 
 const BingoCard = () => {
+  const { width, height } = useWindowSize();
+
   const classes = useStyles();
 
   let [matches, setMatches] = useState([]);
-  let [indexMatches, setIndexMatches] = useState([]);
+  let [indexMatches, setIndexMatches] = useState([...Array(25)]);
+  let [winner, setWinner] = useState(false);
+  let [gameOver, setGameOver] = useState(false);
 
   const findMatches = () => {
-    phrases.flat().forEach((word, index) => {
-      console.log(word, "current word");
+    phrases.flat().map((word, index) => {
       if (called.includes(word)) {
         setMatches((matches) => [...matches, word]);
-        setIndexMatches((index) => [...indexMatches, index]);
-        //check to see if the card hits BINGO based on newly added index to index match arr
+        indexMatches[index] = true;
+        if (checkForBingo(indexMatches)) {
+          setWinner(true);
+          setGameOver(true);
+        }
       }
     });
-
-    console.log(matches, "matches");
   };
 
   return (
@@ -56,6 +81,8 @@ const BingoCard = () => {
       <Button variant="contained" color="primary" onClick={() => findMatches()}>
         Update
       </Button>
+
+      {winner ? <Confetti width={width} height={height} /> : null}
 
       <Table className={classes.table} aria-label="simple table">
         <colgroup>
@@ -67,20 +94,30 @@ const BingoCard = () => {
         </colgroup>
         <TableBody>
           <TableRow>
-            <TableCell align="center">
-              <Typography variant="h3">B</Typography>
+            <TableCell align="center" className={classes.bingoTitle}>
+              <Typography variant="h3" className={classes.bingoFont}>
+                B
+              </Typography>
             </TableCell>
-            <TableCell align="center">
-              <Typography variant="h3">I</Typography>
+            <TableCell align="center" className={classes.bingoTitle}>
+              <Typography variant="h3" className={classes.bingoFont}>
+                I
+              </Typography>
             </TableCell>
-            <TableCell align="center">
-              <Typography variant="h3">N</Typography>
+            <TableCell align="center" className={classes.bingoTitle}>
+              <Typography variant="h3" className={classes.bingoFont}>
+                N
+              </Typography>
             </TableCell>
-            <TableCell align="center">
-              <Typography variant="h3">G</Typography>
+            <TableCell align="center" className={classes.bingoTitle}>
+              <Typography variant="h3" className={classes.bingoFont}>
+                G
+              </Typography>
             </TableCell>
-            <TableCell align="center">
-              <Typography variant="h3">O</Typography>
+            <TableCell align="center" className={classes.bingoTitle}>
+              <Typography variant="h3" className={classes.bingoFont}>
+                O
+              </Typography>
             </TableCell>
           </TableRow>
           {phrases.map((row, index) => (
@@ -95,7 +132,7 @@ const BingoCard = () => {
                   }
                   key={index}
                 >
-                  {item}
+                  <Typography variant="h5">{item}</Typography>
                 </TableCell>
               ))}
             </TableRow>

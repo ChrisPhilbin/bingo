@@ -6,9 +6,6 @@ const Home = () => {
   return (
     <div>
       <h3>Welcome to Meeting Bingo!</h3>
-
-      <BingoCard />
-
       <CreateNewGame />
     </div>
   );
