@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -15,6 +16,22 @@ const useStyles = makeStyles({
   newGameContainer: {
     margin: "auto",
     backgroundColor: "white",
+  },
+  startButton: {
+    borderRadius: 20,
+    backgroundColor: "#6930C3",
+    "&:hover": {
+      backgroundColor: "#5390D9",
+    },
+    color: "white",
+
+    width: 300,
+    height: 100,
+    marginBottom: 30,
+  },
+  choiceFont: {
+    color: "white",
+    fontFamily: '"Permanent Marker", cursive',
   },
 });
 
@@ -69,7 +86,7 @@ const CreateNewGame = () => {
           onClick={() => setShowCustomSetup(true)}
           variant="contained"
           color="primary"
-          style={{ width: 300, height: 100, marginBottom: 30 }}
+          className={classes.startButton}
         >
           Start new game with custom phrases
         </Button>
@@ -89,11 +106,7 @@ const CreateNewGame = () => {
                 value={phrase}
                 onChange={(e) => setPhrase(e.target.value)}
               />
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => updatePhrases()}
-              >
+              <Button variant="contained" onClick={() => updatePhrases()}>
                 Add
               </Button>
               {customPhrases
@@ -111,21 +124,28 @@ const CreateNewGame = () => {
             </Button>
             <Button
               variant="contained"
-              color="primary"
               disabled={startButtonDisabled}
+              color="primary"
             >
               Start Game
             </Button>
           </DialogActions>
         </Dialog>
-        <Typography variant="h5" gutterBottom>
-          -- OR --
+        <Typography
+          variant="h3"
+          gutterBottom
+          align="center"
+          className={classes.choiceFont}
+        >
+          OR
         </Typography>
         <Button
           onClick={() => startNewGame()}
-          variant="contained"
           color="primary"
-          style={{ width: 300, height: 100 }}
+          variant="contained"
+          className={classes.startButton}
+          component={Link}
+          to="/play"
         >
           Start new game with generic phrases
         </Button>
