@@ -24,7 +24,6 @@ const useStyles = makeStyles({
       backgroundColor: "#5390D9",
     },
     color: "white",
-
     width: 300,
     height: 100,
     marginBottom: 30,
@@ -53,16 +52,30 @@ const CreateNewGame = () => {
     return game;
   };
 
-  const updatePhrases = () => {
+  const updatePhrases = (event) => {
+    event.preventDefault();
     if (customPhrases.length > 25) {
       alert("Total phrases cannot be greater than 25");
       return;
     }
-    setCustomPhrases((customPhrases) => [...customPhrases, phrase]);
+    if (customPhrases.includes(phrase.toLowerCase())) {
+      alert(`${phrase} has already been added`);
+      setPhrase("");
+      return;
+    }
+    setCustomPhrases((customPhrases) => [
+      ...customPhrases,
+      phrase.toLowerCase(),
+    ]);
     setPhrase("");
     if (customPhrases.length === 25) {
       setStartButtonDisabled(false);
     }
+  };
+
+  const removePhrase = (removePhrase) => {
+    let filteredPhrases = customPhrases.filter((word) => word !== removePhrase);
+    setCustomPhrases(filteredPhrases);
   };
 
   const cancel = () => {
@@ -98,17 +111,19 @@ const CreateNewGame = () => {
           <DialogContent>
             <DialogContentText>
               Enter 25 key phrases/buzzwords below for your bingo game.
-              <TextField
-                autoFocus
-                margin="dense"
-                id="phrase"
-                label="Phrase"
-                value={phrase}
-                onChange={(e) => setPhrase(e.target.value)}
-              />
-              <Button variant="contained" onClick={() => updatePhrases()}>
-                Add
-              </Button>
+              <form onSubmit={(event) => updatePhrases(event)}>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="phrase"
+                  label="Phrase"
+                  value={phrase}
+                  onChange={(e) => setPhrase(e.target.value)}
+                />
+                <Button type="submit" variant="contained">
+                  Add
+                </Button>
+              </form>
               {customPhrases
                 ? customPhrases.map((phrase) => <div>{phrase}</div>)
                 : null}

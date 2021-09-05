@@ -74,12 +74,20 @@ const BingoCard = () => {
     });
   };
 
+  const startGame = () => {
+    return null;
+  };
+
   return (
     <div>
       <h3>Bingo card</h3>
 
       <Button variant="contained" color="primary" onClick={() => findMatches()}>
         Update
+      </Button>
+
+      <Button variant="contained" color="primary" onClick={() => startGame()}>
+        Start Game
       </Button>
 
       {winner ? <Confetti width={width} height={height} /> : null}
