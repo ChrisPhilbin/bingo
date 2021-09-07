@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import Chip from "@material-ui/core/Chip";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -31,6 +32,9 @@ const useStyles = makeStyles({
   choiceFont: {
     color: "white",
     fontFamily: '"Permanent Marker", cursive',
+  },
+  chips: {
+    margin: 3,
   },
 });
 
@@ -73,8 +77,8 @@ const CreateNewGame = () => {
     }
   };
 
-  const removePhrase = (removePhrase) => {
-    let filteredPhrases = customPhrases.filter((word) => word !== removePhrase);
+  const removePhrase = ({ phrase }) => {
+    let filteredPhrases = customPhrases.filter((word) => word !== phrase);
     setCustomPhrases(filteredPhrases);
   };
 
@@ -111,6 +115,16 @@ const CreateNewGame = () => {
           <DialogContent>
             <DialogContentText>
               Enter 25 key phrases/buzzwords below for your bingo game.
+              <br />
+              <p
+                style={
+                  customPhrases.length === 25
+                    ? { color: "green" }
+                    : { color: "red" }
+                }
+              >
+                {customPhrases.length} of 25
+              </p>
               <form onSubmit={(event) => updatePhrases(event)}>
                 <TextField
                   autoFocus
@@ -125,7 +139,13 @@ const CreateNewGame = () => {
                 </Button>
               </form>
               {customPhrases
-                ? customPhrases.map((phrase) => <div>{phrase}</div>)
+                ? customPhrases.map((phrase) => (
+                    <Chip
+                      label={phrase}
+                      onDelete={() => removePhrase({ phrase })}
+                      className={classes.chips}
+                    />
+                  ))
                 : null}
             </DialogContentText>
           </DialogContent>
