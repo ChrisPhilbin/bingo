@@ -58,7 +58,7 @@ const CreateNewGame = () => {
 
   const updatePhrases = (event) => {
     event.preventDefault();
-    if (customPhrases.length > 25) {
+    if (customPhrases.length >= 25) {
       alert("Total phrases cannot be greater than 25");
       return;
     }
