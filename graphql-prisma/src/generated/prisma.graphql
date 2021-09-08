@@ -1,5 +1,13 @@
 # source: http://localhost:4455/bingo/dev
-# timestamp: Tue Sep 07 2021 20:30:35 GMT-0400 (Eastern Daylight Time)
+# timestamp: Wed Sep 08 2021 06:59:47 GMT-0400 (Eastern Daylight Time)
+
+type AggregateGame {
+  count: Int!
+}
+
+type AggregatePlayer {
+  count: Int!
+}
 
 type AggregateUser {
   count: Int!
@@ -12,6 +20,261 @@ type BatchPayload {
 
 scalar DateTime
 
+type Game implements Node {
+  id: ID!
+  slug: String!
+  host(where: UserWhereInput): User!
+  players(where: PlayerWhereInput, orderBy: PlayerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Player!]
+}
+
+"""A connection to a list of items."""
+type GameConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [GameEdge]!
+  aggregate: AggregateGame!
+}
+
+input GameCreateInput {
+  slug: String!
+  host: UserCreateOneWithoutGamesInput!
+  players: PlayerCreateManyWithoutGameInput
+}
+
+input GameCreateManyWithoutHostInput {
+  create: [GameCreateWithoutHostInput!]
+  connect: [GameWhereUniqueInput!]
+}
+
+input GameCreateOneWithoutPlayersInput {
+  create: GameCreateWithoutPlayersInput
+  connect: GameWhereUniqueInput
+}
+
+input GameCreateWithoutHostInput {
+  slug: String!
+  players: PlayerCreateManyWithoutGameInput
+}
+
+input GameCreateWithoutPlayersInput {
+  slug: String!
+  host: UserCreateOneWithoutGamesInput!
+}
+
+"""An edge in a connection."""
+type GameEdge {
+  """The item at the end of the edge."""
+  node: Game!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum GameOrderByInput {
+  id_ASC
+  id_DESC
+  slug_ASC
+  slug_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type GamePreviousValues {
+  id: ID!
+  slug: String!
+}
+
+type GameSubscriptionPayload {
+  mutation: MutationType!
+  node: Game
+  updatedFields: [String!]
+  previousValues: GamePreviousValues
+}
+
+input GameSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [GameSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [GameSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [GameSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: GameWhereInput
+}
+
+input GameUpdateInput {
+  slug: String
+  host: UserUpdateOneWithoutGamesInput
+  players: PlayerUpdateManyWithoutGameInput
+}
+
+input GameUpdateManyWithoutHostInput {
+  create: [GameCreateWithoutHostInput!]
+  connect: [GameWhereUniqueInput!]
+  disconnect: [GameWhereUniqueInput!]
+  delete: [GameWhereUniqueInput!]
+  update: [GameUpdateWithWhereUniqueWithoutHostInput!]
+  upsert: [GameUpsertWithWhereUniqueWithoutHostInput!]
+}
+
+input GameUpdateOneWithoutPlayersInput {
+  create: GameCreateWithoutPlayersInput
+  connect: GameWhereUniqueInput
+  delete: Boolean
+  update: GameUpdateWithoutPlayersDataInput
+  upsert: GameUpsertWithoutPlayersInput
+}
+
+input GameUpdateWithoutHostDataInput {
+  slug: String
+  players: PlayerUpdateManyWithoutGameInput
+}
+
+input GameUpdateWithoutPlayersDataInput {
+  slug: String
+  host: UserUpdateOneWithoutGamesInput
+}
+
+input GameUpdateWithWhereUniqueWithoutHostInput {
+  where: GameWhereUniqueInput!
+  data: GameUpdateWithoutHostDataInput!
+}
+
+input GameUpsertWithoutPlayersInput {
+  update: GameUpdateWithoutPlayersDataInput!
+  create: GameCreateWithoutPlayersInput!
+}
+
+input GameUpsertWithWhereUniqueWithoutHostInput {
+  where: GameWhereUniqueInput!
+  update: GameUpdateWithoutHostDataInput!
+  create: GameCreateWithoutHostInput!
+}
+
+input GameWhereInput {
+  """Logical AND on all given filters."""
+  AND: [GameWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [GameWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [GameWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  slug: String
+
+  """All values that are not equal to given value."""
+  slug_not: String
+
+  """All values that are contained in given list."""
+  slug_in: [String!]
+
+  """All values that are not contained in given list."""
+  slug_not_in: [String!]
+
+  """All values less than the given value."""
+  slug_lt: String
+
+  """All values less than or equal the given value."""
+  slug_lte: String
+
+  """All values greater than the given value."""
+  slug_gt: String
+
+  """All values greater than or equal the given value."""
+  slug_gte: String
+
+  """All values containing the given string."""
+  slug_contains: String
+
+  """All values not containing the given string."""
+  slug_not_contains: String
+
+  """All values starting with the given string."""
+  slug_starts_with: String
+
+  """All values not starting with the given string."""
+  slug_not_starts_with: String
+
+  """All values ending with the given string."""
+  slug_ends_with: String
+
+  """All values not ending with the given string."""
+  slug_not_ends_with: String
+  host: UserWhereInput
+  players_every: PlayerWhereInput
+  players_some: PlayerWhereInput
+  players_none: PlayerWhereInput
+}
+
+input GameWhereUniqueInput {
+  id: ID
+}
+
 """
 The `Long` scalar type represents non-fractional signed whole numeric values.
 Long can represent values between -(2^63) and 2^63 - 1.
@@ -20,11 +283,23 @@ scalar Long
 
 type Mutation {
   createUser(data: UserCreateInput!): User!
+  createGame(data: GameCreateInput!): Game!
+  createPlayer(data: PlayerCreateInput!): Player!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateGame(data: GameUpdateInput!, where: GameWhereUniqueInput!): Game
+  updatePlayer(data: PlayerUpdateInput!, where: PlayerWhereUniqueInput!): Player
   deleteUser(where: UserWhereUniqueInput!): User
+  deleteGame(where: GameWhereUniqueInput!): Game
+  deletePlayer(where: PlayerWhereUniqueInput!): Player
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  upsertGame(where: GameWhereUniqueInput!, create: GameCreateInput!, update: GameUpdateInput!): Game!
+  upsertPlayer(where: PlayerWhereUniqueInput!, create: PlayerCreateInput!, update: PlayerUpdateInput!): Player!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
+  updateManyGames(data: GameUpdateInput!, where: GameWhereInput): BatchPayload!
+  updateManyPlayers(data: PlayerUpdateInput!, where: PlayerWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  deleteManyGames(where: GameWhereInput): BatchPayload!
+  deleteManyPlayers(where: PlayerWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -54,10 +329,235 @@ type PageInfo {
   endCursor: String
 }
 
+type Player implements Node {
+  id: ID!
+  nickname: String!
+  game(where: GameWhereInput): Game!
+}
+
+"""A connection to a list of items."""
+type PlayerConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PlayerEdge]!
+  aggregate: AggregatePlayer!
+}
+
+input PlayerCreateInput {
+  nickname: String!
+  game: GameCreateOneWithoutPlayersInput!
+}
+
+input PlayerCreateManyWithoutGameInput {
+  create: [PlayerCreateWithoutGameInput!]
+  connect: [PlayerWhereUniqueInput!]
+}
+
+input PlayerCreateWithoutGameInput {
+  nickname: String!
+}
+
+"""An edge in a connection."""
+type PlayerEdge {
+  """The item at the end of the edge."""
+  node: Player!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum PlayerOrderByInput {
+  id_ASC
+  id_DESC
+  nickname_ASC
+  nickname_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type PlayerPreviousValues {
+  id: ID!
+  nickname: String!
+}
+
+type PlayerSubscriptionPayload {
+  mutation: MutationType!
+  node: Player
+  updatedFields: [String!]
+  previousValues: PlayerPreviousValues
+}
+
+input PlayerSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PlayerSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PlayerSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PlayerSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: PlayerWhereInput
+}
+
+input PlayerUpdateInput {
+  nickname: String
+  game: GameUpdateOneWithoutPlayersInput
+}
+
+input PlayerUpdateManyWithoutGameInput {
+  create: [PlayerCreateWithoutGameInput!]
+  connect: [PlayerWhereUniqueInput!]
+  disconnect: [PlayerWhereUniqueInput!]
+  delete: [PlayerWhereUniqueInput!]
+  update: [PlayerUpdateWithWhereUniqueWithoutGameInput!]
+  upsert: [PlayerUpsertWithWhereUniqueWithoutGameInput!]
+}
+
+input PlayerUpdateWithoutGameDataInput {
+  nickname: String
+}
+
+input PlayerUpdateWithWhereUniqueWithoutGameInput {
+  where: PlayerWhereUniqueInput!
+  data: PlayerUpdateWithoutGameDataInput!
+}
+
+input PlayerUpsertWithWhereUniqueWithoutGameInput {
+  where: PlayerWhereUniqueInput!
+  update: PlayerUpdateWithoutGameDataInput!
+  create: PlayerCreateWithoutGameInput!
+}
+
+input PlayerWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PlayerWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PlayerWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PlayerWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  nickname: String
+
+  """All values that are not equal to given value."""
+  nickname_not: String
+
+  """All values that are contained in given list."""
+  nickname_in: [String!]
+
+  """All values that are not contained in given list."""
+  nickname_not_in: [String!]
+
+  """All values less than the given value."""
+  nickname_lt: String
+
+  """All values less than or equal the given value."""
+  nickname_lte: String
+
+  """All values greater than the given value."""
+  nickname_gt: String
+
+  """All values greater than or equal the given value."""
+  nickname_gte: String
+
+  """All values containing the given string."""
+  nickname_contains: String
+
+  """All values not containing the given string."""
+  nickname_not_contains: String
+
+  """All values starting with the given string."""
+  nickname_starts_with: String
+
+  """All values not starting with the given string."""
+  nickname_not_starts_with: String
+
+  """All values ending with the given string."""
+  nickname_ends_with: String
+
+  """All values not ending with the given string."""
+  nickname_not_ends_with: String
+  game: GameWhereInput
+}
+
+input PlayerWhereUniqueInput {
+  id: ID
+}
+
 type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  games(where: GameWhereInput, orderBy: GameOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Game]!
+  players(where: PlayerWhereInput, orderBy: PlayerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Player]!
   user(where: UserWhereUniqueInput!): User
+  game(where: GameWhereUniqueInput!): Game
+  player(where: PlayerWhereUniqueInput!): Player
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  gamesConnection(where: GameWhereInput, orderBy: GameOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GameConnection!
+  playersConnection(where: PlayerWhereInput, orderBy: PlayerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PlayerConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -68,6 +568,8 @@ type Query {
 
 type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  game(where: GameSubscriptionWhereInput): GameSubscriptionPayload
+  player(where: PlayerSubscriptionWhereInput): PlayerSubscriptionPayload
 }
 
 type User implements Node {
@@ -77,6 +579,7 @@ type User implements Node {
   password: String!
   updatedAt: DateTime!
   createdAt: DateTime!
+  games(where: GameWhereInput, orderBy: GameOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Game!]
 }
 
 """A connection to a list of items."""
@@ -90,6 +593,18 @@ type UserConnection {
 }
 
 input UserCreateInput {
+  name: String!
+  email: String!
+  password: String!
+  games: GameCreateManyWithoutHostInput
+}
+
+input UserCreateOneWithoutGamesInput {
+  create: UserCreateWithoutGamesInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutGamesInput {
   name: String!
   email: String!
   password: String!
@@ -171,6 +686,26 @@ input UserUpdateInput {
   name: String
   email: String
   password: String
+  games: GameUpdateManyWithoutHostInput
+}
+
+input UserUpdateOneWithoutGamesInput {
+  create: UserCreateWithoutGamesInput
+  connect: UserWhereUniqueInput
+  delete: Boolean
+  update: UserUpdateWithoutGamesDataInput
+  upsert: UserUpsertWithoutGamesInput
+}
+
+input UserUpdateWithoutGamesDataInput {
+  name: String
+  email: String
+  password: String
+}
+
+input UserUpsertWithoutGamesInput {
+  update: UserUpdateWithoutGamesDataInput!
+  create: UserCreateWithoutGamesInput!
 }
 
 input UserWhereInput {
@@ -386,6 +921,9 @@ input UserWhereInput {
 
   """All values greater than or equal the given value."""
   createdAt_gte: DateTime
+  games_every: GameWhereInput
+  games_some: GameWhereInput
+  games_none: GameWhereInput
 }
 
 input UserWhereUniqueInput {
