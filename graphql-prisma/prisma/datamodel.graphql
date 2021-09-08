@@ -11,12 +11,19 @@ type User {
 type Game {
   id: ID! @unique
   slug: String!
+  title: String!
+  published: Boolean!
+  finished: Boolean!
   host: User! @relation(name: "GameToUser", onDelete: SET_NULL)
   players: [Player!]! @relation(name: "GameToPlayer", onDelete: CASCADE)
+  updatedAt: DateTime! @updatedAt
+  createdAt: DateTime! @createdAt
 }
 
 type Player {
   id: ID! @unique
   nickname: String!
   game: Game! @relation(name: "GameToPlayer", onDelete: SET_NULL)
+  updatedAt: DateTime! @updatedAt
+  createdAt: DateTime! @createdAt
 }

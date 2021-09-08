@@ -18,6 +18,7 @@ type Mutation {
   login(data: LoginUserInput!): AuthPayload!
   deleteUser: User!
   updateUser(data: UpdateUserInput!): User!
+  createGame(data: CreateGameInput!): Game!
 }
 
 # type Subscription {
@@ -33,6 +34,12 @@ input CreateUserInput {
   name: String!
   email: String!
   password: String!
+}
+
+input CreateGameInput {
+  title: String!
+  published: Boolean
+  finished: Boolean
 }
 
 input LoginUserInput {

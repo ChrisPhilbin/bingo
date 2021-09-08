@@ -31,7 +31,20 @@ const Query = {
     });
   },
   async games(parent, args, { prisma, request }, info) {
-    return await prisma.query.games;
+    const userId = getUserId(request);
+
+    return await prisma.query.games({
+      where: {
+        host: userId,
+      },
+    });
+  },
+  async game(parent, args, { prisma, request }, info) {
+    return await prisma.query.game({
+      where: {
+        slug: request,
+      },
+    });
   },
 };
 

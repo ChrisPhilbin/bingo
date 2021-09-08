@@ -1,5 +1,5 @@
 # source: http://localhost:4455/bingo/dev
-# timestamp: Wed Sep 08 2021 06:59:47 GMT-0400 (Eastern Daylight Time)
+# timestamp: Wed Sep 08 2021 19:09:02 GMT-0400 (Eastern Daylight Time)
 
 type AggregateGame {
   count: Int!
@@ -23,8 +23,13 @@ scalar DateTime
 type Game implements Node {
   id: ID!
   slug: String!
+  title: String!
+  published: Boolean!
+  finished: Boolean!
   host(where: UserWhereInput): User!
   players(where: PlayerWhereInput, orderBy: PlayerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Player!]
+  updatedAt: DateTime!
+  createdAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -39,6 +44,9 @@ type GameConnection {
 
 input GameCreateInput {
   slug: String!
+  title: String!
+  published: Boolean!
+  finished: Boolean!
   host: UserCreateOneWithoutGamesInput!
   players: PlayerCreateManyWithoutGameInput
 }
@@ -55,11 +63,17 @@ input GameCreateOneWithoutPlayersInput {
 
 input GameCreateWithoutHostInput {
   slug: String!
+  title: String!
+  published: Boolean!
+  finished: Boolean!
   players: PlayerCreateManyWithoutGameInput
 }
 
 input GameCreateWithoutPlayersInput {
   slug: String!
+  title: String!
+  published: Boolean!
+  finished: Boolean!
   host: UserCreateOneWithoutGamesInput!
 }
 
@@ -77,6 +91,12 @@ enum GameOrderByInput {
   id_DESC
   slug_ASC
   slug_DESC
+  title_ASC
+  title_DESC
+  published_ASC
+  published_DESC
+  finished_ASC
+  finished_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -86,6 +106,11 @@ enum GameOrderByInput {
 type GamePreviousValues {
   id: ID!
   slug: String!
+  title: String!
+  published: Boolean!
+  finished: Boolean!
+  updatedAt: DateTime!
+  createdAt: DateTime!
 }
 
 type GameSubscriptionPayload {
@@ -129,6 +154,9 @@ input GameSubscriptionWhereInput {
 
 input GameUpdateInput {
   slug: String
+  title: String
+  published: Boolean
+  finished: Boolean
   host: UserUpdateOneWithoutGamesInput
   players: PlayerUpdateManyWithoutGameInput
 }
@@ -152,11 +180,17 @@ input GameUpdateOneWithoutPlayersInput {
 
 input GameUpdateWithoutHostDataInput {
   slug: String
+  title: String
+  published: Boolean
+  finished: Boolean
   players: PlayerUpdateManyWithoutGameInput
 }
 
 input GameUpdateWithoutPlayersDataInput {
   slug: String
+  title: String
+  published: Boolean
+  finished: Boolean
   host: UserUpdateOneWithoutGamesInput
 }
 
@@ -265,6 +299,98 @@ input GameWhereInput {
 
   """All values not ending with the given string."""
   slug_not_ends_with: String
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  published: Boolean
+
+  """All values that are not equal to given value."""
+  published_not: Boolean
+  finished: Boolean
+
+  """All values that are not equal to given value."""
+  finished_not: Boolean
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
   host: UserWhereInput
   players_every: PlayerWhereInput
   players_some: PlayerWhereInput
@@ -333,6 +459,8 @@ type Player implements Node {
   id: ID!
   nickname: String!
   game(where: GameWhereInput): Game!
+  updatedAt: DateTime!
+  createdAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -382,6 +510,8 @@ enum PlayerOrderByInput {
 type PlayerPreviousValues {
   id: ID!
   nickname: String!
+  updatedAt: DateTime!
+  createdAt: DateTime!
 }
 
 type PlayerSubscriptionPayload {
@@ -541,6 +671,50 @@ input PlayerWhereInput {
 
   """All values not ending with the given string."""
   nickname_not_ends_with: String
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
   game: GameWhereInput
 }
 
