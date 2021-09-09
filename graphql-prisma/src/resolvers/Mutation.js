@@ -74,15 +74,23 @@ const Mutation = {
     const userId = await getUserId(request);
     const slug = await generateGameSlug();
 
-    const game = prisma.mutation.createGame({
-      data: {
-        host: userId,
-        slug: slug,
-        title: args.data.title,
-        published: false,
-        finished: false,
+    const game = await prisma.mutation.createGame(
+      {
+        data: {
+          host: {
+            connect: {
+              id: userId,
+            },
+          },
+          slug: slug,
+          title: args.data.title,
+          players: [],
+          published: args.data.published,
+          finished: args.data.finshed,
+        },
       },
-    });
+      info
+    );
     return game;
   },
 };

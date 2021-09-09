@@ -38,8 +38,8 @@ input CreateUserInput {
 
 input CreateGameInput {
   title: String!
-  published: Boolean
-  finished: Boolean
+  published: Boolean!
+  finished: Boolean!
 }
 
 input LoginUserInput {
@@ -67,6 +67,8 @@ type Game {
   slug: String!
   host: User!
   players: [Player]!
+  finished: Boolean!
+  published: Boolean!
   updatedAt: String!
   createdAt: String!
 }
