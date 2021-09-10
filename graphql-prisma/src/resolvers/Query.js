@@ -33,18 +33,30 @@ const Query = {
   async games(parent, args, { prisma, request }, info) {
     const userId = getUserId(request);
 
-    return await prisma.query.games({
-      where: {
-        host: userId,
+    return await prisma.query.games(
+      {
+        where: {
+          host: {
+            id: userId,
+          },
+        },
       },
-    });
+      info
+    );
   },
   async game(parent, args, { prisma, request }, info) {
-    return await prisma.query.game({
-      where: {
-        slug: request,
+    if (!args.query) {
+      throw new Error("Must provide query string.");
+    }
+
+    return await prisma.query.game(
+      {
+        where: {
+          id: args.query,
+        },
       },
-    });
+      info
+    );
   },
 };
 

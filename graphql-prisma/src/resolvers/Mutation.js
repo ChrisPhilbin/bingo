@@ -92,6 +92,53 @@ const Mutation = {
     );
     return game;
   },
+  async updateGame(parent, args, { prisma, request }, info) {
+    const userId = await getUserId(request);
+
+    const gameExists = await prisma.exists.Game({
+      id: args.id,
+      host: {
+        id: userId,
+      },
+    });
+
+    if (!gameExists) {
+      throw new Error("Cannot edit game.");
+    }
+
+    return prisma.mutation.updateGame(
+      {
+        where: {
+          id: args.id,
+        },
+        data: args.data,
+      },
+      info
+    );
+  },
+  async deleteGame(parent, args, { prisma, request }, info) {
+    const userId = await getUserId(request);
+
+    const gameExists = await prisma.exists.Game({
+      id: args.id,
+      host: {
+        id: userId,
+      },
+    });
+
+    if (!gameExists) {
+      throw new Error("Unable to delete game.");
+    }
+
+    return prisma.mutation.deletePost(
+      {
+        where: {
+          id: args.id,
+        },
+      },
+      info
+    );
+  },
 };
 
 export { Mutation as default };
