@@ -10,7 +10,8 @@ type Query {
   ): [User!]!
   me: User!
   games: [Game!]!
-  game(query: String!): Game!
+  game(id: String!): Game!
+  gameBySlug(slug: String!): Game!
 }
 
 type Mutation {

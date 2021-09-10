@@ -10,7 +10,7 @@ type User {
 
 type Game {
   id: ID! @unique
-  slug: String!
+  slug: String! @unique
   title: String!
   published: Boolean!
   finished: Boolean!

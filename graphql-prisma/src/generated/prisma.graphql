@@ -1,5 +1,5 @@
 # source: http://localhost:4455/bingo/dev
-# timestamp: Wed Sep 08 2021 19:09:02 GMT-0400 (Eastern Daylight Time)
+# timestamp: Fri Sep 10 2021 07:48:04 GMT-0400 (Eastern Daylight Time)
 
 type AggregateGame {
   count: Int!
@@ -399,6 +399,7 @@ input GameWhereInput {
 
 input GameWhereUniqueInput {
   id: ID
+  slug: String
 }
 
 """

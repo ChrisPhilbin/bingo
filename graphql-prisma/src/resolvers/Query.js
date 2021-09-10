@@ -45,18 +45,30 @@ const Query = {
     );
   },
   async game(parent, args, { prisma, request }, info) {
-    if (!args.query) {
-      throw new Error("Must provide query string.");
+    if (!args.id) {
+      throw new Error("Must provide query.");
     }
 
-    return await prisma.query.game(
-      {
-        where: {
-          id: args.query,
-        },
+    const opArgs = {
+      where: {
+        id: args.id,
       },
-      info
-    );
+    };
+
+    return await prisma.query.game(opArgs, info);
+  },
+  async gameBySlug(parent, args, { prisma, request }, info) {
+    if (!args.slug) {
+      throw new Error("Must provide slug");
+    }
+
+    const opArgs = {
+      where: {
+        slug: args.slug,
+      },
+    };
+
+    return await prisma.query.game(opArgs, info);
   },
 };
 
