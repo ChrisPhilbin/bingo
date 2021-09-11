@@ -70,6 +70,9 @@ const Query = {
 
     return await prisma.query.game(opArgs, info);
   },
+  async players(parent, args, { prisma, request }, info) {
+    return prisma.query.players(info);
+  },
 };
 
 export { Query as default };

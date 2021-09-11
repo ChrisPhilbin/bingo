@@ -12,6 +12,7 @@ type Query {
   games: [Game!]!
   game(id: String!): Game!
   gameBySlug(slug: String!): Game!
+  players: [Player!]!
 }
 
 type Mutation {
@@ -22,6 +23,8 @@ type Mutation {
   createGame(data: CreateGameInput!): Game!
   updateGame(id: ID!, data: UpdateGameInput!): Game!
   deleteGame(id: ID!): Game!
+  createPlayer(slug: String!, data: CreatePlayerInput!): Player!
+  deletePlayer(id: ID!): Player!
 }
 
 # type Subscription {
@@ -43,6 +46,10 @@ input CreateGameInput {
   title: String!
   published: Boolean!
   finished: Boolean!
+}
+
+input CreatePlayerInput {
+  nickname: String!
 }
 
 input UpdateGameInput {

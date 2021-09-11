@@ -139,6 +139,49 @@ const Mutation = {
       info
     );
   },
+  async createPlayer(parent, args, { prisma, request }, info) {
+    const gameExists = await prisma.exists.Game({
+      slug: args.slug,
+      published: true,
+      finished: false,
+    });
+
+    if (!gameExists) {
+      throw new Error("Unable to find game.");
+    }
+
+    return prisma.mutation.createPlayer(
+      {
+        data: {
+          nickname: args.data.nickname,
+          game: {
+            connect: {
+              slug: args.slug,
+            },
+          },
+        },
+      },
+      info
+    );
+  },
+  async deletePlayer(parent, args, { prisma, request }, info) {
+    const playerExists = await prisma.exists.Player({
+      id: args.id,
+    });
+
+    if (!playerExists) {
+      throw new Error("Cannot delete player.");
+    }
+
+    return prisma.mutation.deletePlayer(
+      {
+        where: {
+          id: args.id,
+        },
+      },
+      info
+    );
+  },
 };
 
 export { Mutation as default };
