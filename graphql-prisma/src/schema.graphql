@@ -50,12 +50,14 @@ input CreateGameInput {
 
 input CreatePlayerInput {
   nickname: String!
+  board: [String!]!
 }
 
 input UpdateGameInput {
   title: String
   published: Boolean
   finished: Boolean
+  calledPhrases: [String]
 }
 
 input LoginUserInput {
@@ -84,6 +86,7 @@ type Game {
   host: User!
   title: String!
   players: [Player!]!
+  calledPhrases: [String!]!
   finished: Boolean!
   published: Boolean!
   updatedAt: String!
@@ -94,6 +97,7 @@ type Player {
   id: ID!
   nickname: String!
   game: Game!
+  board: [String!]!
   updatedAt: String!
   createdAt: String!
 }

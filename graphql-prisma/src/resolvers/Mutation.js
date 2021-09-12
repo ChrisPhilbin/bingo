@@ -106,6 +106,8 @@ const Mutation = {
       throw new Error("Cannot edit game.");
     }
 
+    console.log(args.data, "data?");
+
     return prisma.mutation.updateGame(
       {
         where: {
@@ -150,10 +152,19 @@ const Mutation = {
       throw new Error("Unable to find game.");
     }
 
+    if (args.data.board.length !== 25) {
+      throw new Error("Board must contain 25 phrases.");
+    }
+
+    console.log(args.data.board, "board array?");
+
     return prisma.mutation.createPlayer(
       {
         data: {
           nickname: args.data.nickname,
+          board: {
+            set: args.data.board,
+          },
           game: {
             connect: {
               slug: args.slug,

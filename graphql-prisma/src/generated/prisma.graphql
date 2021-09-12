@@ -1,5 +1,5 @@
 # source: http://localhost:4455/bingo/dev
-# timestamp: Fri Sep 10 2021 07:48:04 GMT-0400 (Eastern Daylight Time)
+# timestamp: Sun Sep 12 2021 09:23:33 GMT-0400 (Eastern Daylight Time)
 
 type AggregateGame {
   count: Int!
@@ -26,6 +26,7 @@ type Game implements Node {
   title: String!
   published: Boolean!
   finished: Boolean!
+  calledPhrases: [String!]!
   host(where: UserWhereInput): User!
   players(where: PlayerWhereInput, orderBy: PlayerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Player!]
   updatedAt: DateTime!
@@ -42,11 +43,16 @@ type GameConnection {
   aggregate: AggregateGame!
 }
 
+input GameCreatecalledPhrasesInput {
+  set: [String!]
+}
+
 input GameCreateInput {
   slug: String!
   title: String!
   published: Boolean!
   finished: Boolean!
+  calledPhrases: GameCreatecalledPhrasesInput
   host: UserCreateOneWithoutGamesInput!
   players: PlayerCreateManyWithoutGameInput
 }
@@ -66,6 +72,7 @@ input GameCreateWithoutHostInput {
   title: String!
   published: Boolean!
   finished: Boolean!
+  calledPhrases: GameCreatecalledPhrasesInput
   players: PlayerCreateManyWithoutGameInput
 }
 
@@ -74,6 +81,7 @@ input GameCreateWithoutPlayersInput {
   title: String!
   published: Boolean!
   finished: Boolean!
+  calledPhrases: GameCreatecalledPhrasesInput
   host: UserCreateOneWithoutGamesInput!
 }
 
@@ -109,6 +117,7 @@ type GamePreviousValues {
   title: String!
   published: Boolean!
   finished: Boolean!
+  calledPhrases: [String!]!
   updatedAt: DateTime!
   createdAt: DateTime!
 }
@@ -152,11 +161,16 @@ input GameSubscriptionWhereInput {
   node: GameWhereInput
 }
 
+input GameUpdatecalledPhrasesInput {
+  set: [String!]
+}
+
 input GameUpdateInput {
   slug: String
   title: String
   published: Boolean
   finished: Boolean
+  calledPhrases: GameUpdatecalledPhrasesInput
   host: UserUpdateOneWithoutGamesInput
   players: PlayerUpdateManyWithoutGameInput
 }
@@ -183,6 +197,7 @@ input GameUpdateWithoutHostDataInput {
   title: String
   published: Boolean
   finished: Boolean
+  calledPhrases: GameUpdatecalledPhrasesInput
   players: PlayerUpdateManyWithoutGameInput
 }
 
@@ -191,6 +206,7 @@ input GameUpdateWithoutPlayersDataInput {
   title: String
   published: Boolean
   finished: Boolean
+  calledPhrases: GameUpdatecalledPhrasesInput
   host: UserUpdateOneWithoutGamesInput
 }
 
@@ -460,6 +476,7 @@ type Player implements Node {
   id: ID!
   nickname: String!
   game(where: GameWhereInput): Game!
+  board: [String!]!
   updatedAt: DateTime!
   createdAt: DateTime!
 }
@@ -474,8 +491,13 @@ type PlayerConnection {
   aggregate: AggregatePlayer!
 }
 
+input PlayerCreateboardInput {
+  set: [String!]
+}
+
 input PlayerCreateInput {
   nickname: String!
+  board: PlayerCreateboardInput
   game: GameCreateOneWithoutPlayersInput!
 }
 
@@ -486,6 +508,7 @@ input PlayerCreateManyWithoutGameInput {
 
 input PlayerCreateWithoutGameInput {
   nickname: String!
+  board: PlayerCreateboardInput
 }
 
 """An edge in a connection."""
@@ -511,6 +534,7 @@ enum PlayerOrderByInput {
 type PlayerPreviousValues {
   id: ID!
   nickname: String!
+  board: [String!]!
   updatedAt: DateTime!
   createdAt: DateTime!
 }
@@ -554,8 +578,13 @@ input PlayerSubscriptionWhereInput {
   node: PlayerWhereInput
 }
 
+input PlayerUpdateboardInput {
+  set: [String!]
+}
+
 input PlayerUpdateInput {
   nickname: String
+  board: PlayerUpdateboardInput
   game: GameUpdateOneWithoutPlayersInput
 }
 
@@ -570,6 +599,7 @@ input PlayerUpdateManyWithoutGameInput {
 
 input PlayerUpdateWithoutGameDataInput {
   nickname: String
+  board: PlayerUpdateboardInput
 }
 
 input PlayerUpdateWithWhereUniqueWithoutGameInput {

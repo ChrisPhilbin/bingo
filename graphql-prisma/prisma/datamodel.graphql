@@ -14,6 +14,7 @@ type Game {
   title: String!
   published: Boolean!
   finished: Boolean!
+  calledPhrases: [String!]!
   host: User! @relation(name: "GameToUser", onDelete: SET_NULL)
   players: [Player!]! @relation(name: "GameToPlayer", onDelete: CASCADE)
   updatedAt: DateTime! @updatedAt
@@ -24,6 +25,7 @@ type Player {
   id: ID! @unique
   nickname: String!
   game: Game! @relation(name: "GameToPlayer", onDelete: SET_NULL)
+  board: [String!]!
   updatedAt: DateTime! @updatedAt
   createdAt: DateTime! @createdAt
 }
