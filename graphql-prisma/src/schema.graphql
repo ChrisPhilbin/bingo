@@ -55,9 +55,9 @@ input CreatePlayerInput {
 
 input UpdateGameInput {
   title: String
+  calledPhrases: String
   published: Boolean
   finished: Boolean
-  calledPhrases: [String]
 }
 
 input LoginUserInput {
@@ -98,6 +98,7 @@ type Player {
   nickname: String!
   game: Game!
   board: [String!]!
+  matches: [Boolean!]!
   updatedAt: String!
   createdAt: String!
 }

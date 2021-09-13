@@ -1,5 +1,5 @@
 # source: http://localhost:4455/bingo/dev
-# timestamp: Sun Sep 12 2021 09:23:33 GMT-0400 (Eastern Daylight Time)
+# timestamp: Mon Sep 13 2021 19:30:20 GMT-0400 (Eastern Daylight Time)
 
 type AggregateGame {
   count: Int!
@@ -477,6 +477,7 @@ type Player implements Node {
   nickname: String!
   game(where: GameWhereInput): Game!
   board: [String!]!
+  matches: [Boolean!]!
   updatedAt: DateTime!
   createdAt: DateTime!
 }
@@ -498,6 +499,7 @@ input PlayerCreateboardInput {
 input PlayerCreateInput {
   nickname: String!
   board: PlayerCreateboardInput
+  matches: PlayerCreatematchesInput
   game: GameCreateOneWithoutPlayersInput!
 }
 
@@ -506,9 +508,14 @@ input PlayerCreateManyWithoutGameInput {
   connect: [PlayerWhereUniqueInput!]
 }
 
+input PlayerCreatematchesInput {
+  set: [Boolean!]
+}
+
 input PlayerCreateWithoutGameInput {
   nickname: String!
   board: PlayerCreateboardInput
+  matches: PlayerCreatematchesInput
 }
 
 """An edge in a connection."""
@@ -535,6 +542,7 @@ type PlayerPreviousValues {
   id: ID!
   nickname: String!
   board: [String!]!
+  matches: [Boolean!]!
   updatedAt: DateTime!
   createdAt: DateTime!
 }
@@ -585,6 +593,7 @@ input PlayerUpdateboardInput {
 input PlayerUpdateInput {
   nickname: String
   board: PlayerUpdateboardInput
+  matches: PlayerUpdatematchesInput
   game: GameUpdateOneWithoutPlayersInput
 }
 
@@ -597,9 +606,14 @@ input PlayerUpdateManyWithoutGameInput {
   upsert: [PlayerUpsertWithWhereUniqueWithoutGameInput!]
 }
 
+input PlayerUpdatematchesInput {
+  set: [Boolean!]
+}
+
 input PlayerUpdateWithoutGameDataInput {
   nickname: String
   board: PlayerUpdateboardInput
+  matches: PlayerUpdatematchesInput
 }
 
 input PlayerUpdateWithWhereUniqueWithoutGameInput {

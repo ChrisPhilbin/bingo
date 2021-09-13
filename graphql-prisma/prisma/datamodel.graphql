@@ -26,6 +26,7 @@ type Player {
   nickname: String!
   game: Game! @relation(name: "GameToPlayer", onDelete: SET_NULL)
   board: [String!]!
+  matches: [Boolean!]!
   updatedAt: DateTime! @updatedAt
   createdAt: DateTime! @createdAt
 }

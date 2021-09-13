@@ -3,6 +3,7 @@ import getUserId from "../utils/getUserId";
 import generateToken from "../utils/generateToken";
 import hashPassword from "../utils/hashPassword";
 import generateGameSlug from "../utils/generateGameSlug";
+import { defaultMatches } from "../utils/gameDefaultBoard";
 
 const Mutation = {
   async createUser(parent, args, { prisma }, info) {
@@ -106,14 +107,42 @@ const Mutation = {
       throw new Error("Cannot edit game.");
     }
 
-    console.log(args.data, "data?");
+    const game = await prisma.query.game(
+      {
+        where: {
+          id: args.id,
+        },
+      },
+      info
+    );
+
+    const calledPhrases = game.calledPhrases;
+
+    if (!args.data.calledPhrases) {
+      return prisma.mutation.updateGame(
+        {
+          where: {
+            id: args.id,
+          },
+          data: {
+            ...args.data,
+          },
+        },
+        info
+      );
+    }
 
     return prisma.mutation.updateGame(
       {
         where: {
           id: args.id,
         },
-        data: args.data,
+        data: {
+          ...args.data,
+          calledPhrases: {
+            set: [...calledPhrases, args.data.calledPhrases.toLowerCase()],
+          },
+        },
       },
       info
     );
@@ -156,11 +185,14 @@ const Mutation = {
       throw new Error("Board must contain 25 phrases.");
     }
 
-    console.log(args.data.board, "board array?");
+    console.log(defaultMatches, "default matches");
 
     return prisma.mutation.createPlayer(
       {
         data: {
+          matches: {
+            set: defaultMatches,
+          },
           nickname: args.data.nickname,
           board: {
             set: args.data.board,
