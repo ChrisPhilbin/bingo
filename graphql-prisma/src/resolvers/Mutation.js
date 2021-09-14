@@ -4,6 +4,7 @@ import generateToken from "../utils/generateToken";
 import hashPassword from "../utils/hashPassword";
 import generateGameSlug from "../utils/generateGameSlug";
 import { defaultMatches } from "../utils/gameDefaultBoard";
+import updateBoards from "../utils/updateBoards";
 
 const Mutation = {
   async createUser(parent, args, { prisma }, info) {
@@ -116,8 +117,6 @@ const Mutation = {
       info
     );
 
-    const calledPhrases = game.calledPhrases;
-
     if (!args.data.calledPhrases) {
       return prisma.mutation.updateGame(
         {
@@ -132,7 +131,7 @@ const Mutation = {
       );
     }
 
-    return prisma.mutation.updateGame(
+    const updatedGame = await prisma.mutation.updateGame(
       {
         where: {
           id: args.id,
@@ -140,12 +139,16 @@ const Mutation = {
         data: {
           ...args.data,
           calledPhrases: {
-            set: [...calledPhrases, args.data.calledPhrases.toLowerCase()],
+            set: [...game.calledPhrases, args.data.calledPhrases.toLowerCase()],
           },
         },
       },
       info
     );
+
+    updateBoards(game.players, args.data.calledPhrases, prisma);
+
+    return updatedGame;
   },
   async deleteGame(parent, args, { prisma, request }, info) {
     const userId = await getUserId(request);
