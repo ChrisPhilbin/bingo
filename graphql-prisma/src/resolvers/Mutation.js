@@ -132,24 +132,34 @@ const Mutation = {
       );
     }
 
-    updateBoards(game.players, args.data.calledPhrases.toLowerCase(), prisma);
+    if (!game.finished) {
+      updateBoards(game.players, args.data.calledPhrases.toLowerCase(), prisma);
 
-    const updatedGame = await prisma.mutation.updateGame(
-      {
-        where: {
-          id: args.id,
-        },
-        data: {
-          ...args.data,
-          calledPhrases: {
-            set: [...game.calledPhrases, args.data.calledPhrases.toLowerCase()],
+      let isGameFinished = game.calledPhrases.length === 24 ? true : false;
+
+      const updatedGame = await prisma.mutation.updateGame(
+        {
+          where: {
+            id: args.id,
+          },
+          data: {
+            ...args.data,
+            finished: isGameFinished,
+            calledPhrases: {
+              set: [
+                ...game.calledPhrases,
+                args.data.calledPhrases.toLowerCase(),
+              ],
+            },
           },
         },
-      },
-      info
-    );
+        info
+      );
 
-    return updatedGame;
+      return updatedGame;
+    } else {
+      throw new Error("Game is finshed!");
+    }
   },
   async deleteGame(parent, args, { prisma, request }, info) {
     const userId = await getUserId(request);
