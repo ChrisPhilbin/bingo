@@ -85,6 +85,7 @@ type Game {
   slug: String!
   host: User!
   title: String!
+  winner: Player
   players: [Player!]!
   calledPhrases: [String!]!
   finished: Boolean!
@@ -97,6 +98,7 @@ type Player {
   id: ID!
   nickname: String!
   game: Game!
+  bingo: Boolean!
   board: [String!]!
   matches: [Boolean!]!
   updatedAt: String!

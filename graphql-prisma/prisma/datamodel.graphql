@@ -24,6 +24,7 @@ type Game {
 type Player {
   id: ID! @unique
   nickname: String!
+  bingo: Boolean! @default(value: "false")
   game: Game! @relation(name: "GameToPlayer", onDelete: SET_NULL)
   board: [String!]!
   matches: [Boolean!]!

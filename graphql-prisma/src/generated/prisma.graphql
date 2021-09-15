@@ -1,5 +1,5 @@
 # source: http://localhost:4455/bingo/dev
-# timestamp: Mon Sep 13 2021 19:30:20 GMT-0400 (Eastern Daylight Time)
+# timestamp: Tue Sep 14 2021 22:18:46 GMT-0400 (Eastern Daylight Time)
 
 type AggregateGame {
   count: Int!
@@ -475,6 +475,7 @@ type PageInfo {
 type Player implements Node {
   id: ID!
   nickname: String!
+  bingo: Boolean!
   game(where: GameWhereInput): Game!
   board: [String!]!
   matches: [Boolean!]!
@@ -498,6 +499,7 @@ input PlayerCreateboardInput {
 
 input PlayerCreateInput {
   nickname: String!
+  bingo: Boolean
   board: PlayerCreateboardInput
   matches: PlayerCreatematchesInput
   game: GameCreateOneWithoutPlayersInput!
@@ -514,6 +516,7 @@ input PlayerCreatematchesInput {
 
 input PlayerCreateWithoutGameInput {
   nickname: String!
+  bingo: Boolean
   board: PlayerCreateboardInput
   matches: PlayerCreatematchesInput
 }
@@ -532,6 +535,8 @@ enum PlayerOrderByInput {
   id_DESC
   nickname_ASC
   nickname_DESC
+  bingo_ASC
+  bingo_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -541,6 +546,7 @@ enum PlayerOrderByInput {
 type PlayerPreviousValues {
   id: ID!
   nickname: String!
+  bingo: Boolean!
   board: [String!]!
   matches: [Boolean!]!
   updatedAt: DateTime!
@@ -592,6 +598,7 @@ input PlayerUpdateboardInput {
 
 input PlayerUpdateInput {
   nickname: String
+  bingo: Boolean
   board: PlayerUpdateboardInput
   matches: PlayerUpdatematchesInput
   game: GameUpdateOneWithoutPlayersInput
@@ -612,6 +619,7 @@ input PlayerUpdatematchesInput {
 
 input PlayerUpdateWithoutGameDataInput {
   nickname: String
+  bingo: Boolean
   board: PlayerUpdateboardInput
   matches: PlayerUpdatematchesInput
 }
@@ -716,6 +724,10 @@ input PlayerWhereInput {
 
   """All values not ending with the given string."""
   nickname_not_ends_with: String
+  bingo: Boolean
+
+  """All values that are not equal to given value."""
+  bingo_not: Boolean
   updatedAt: DateTime
 
   """All values that are not equal to given value."""

@@ -131,6 +131,8 @@ const Mutation = {
       );
     }
 
+    updateBoards(game.players, args.data.calledPhrases, prisma);
+
     const updatedGame = await prisma.mutation.updateGame(
       {
         where: {
@@ -145,8 +147,6 @@ const Mutation = {
       },
       info
     );
-
-    updateBoards(game.players, args.data.calledPhrases, prisma);
 
     return updatedGame;
   },
