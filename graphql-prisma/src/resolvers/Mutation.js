@@ -5,6 +5,7 @@ import hashPassword from "../utils/hashPassword";
 import generateGameSlug from "../utils/generateGameSlug";
 import { defaultMatches } from "../utils/gameDefaultBoard";
 import updateBoards from "../utils/updateBoards";
+import findDuplicates from "../utils/findDuplicates";
 
 const Mutation = {
   async createUser(parent, args, { prisma }, info) {
@@ -131,7 +132,7 @@ const Mutation = {
       );
     }
 
-    updateBoards(game.players, args.data.calledPhrases, prisma);
+    updateBoards(game.players, args.data.calledPhrases.toLowerCase(), prisma);
 
     const updatedGame = await prisma.mutation.updateGame(
       {
@@ -188,7 +189,11 @@ const Mutation = {
       throw new Error("Board must contain 25 phrases.");
     }
 
-    console.log(defaultMatches, "default matches");
+    let duplicatesPresent = await findDuplicates(args.data.board);
+
+    if (duplicatesPresent) {
+      throw new Error("Board must have only unique phrases");
+    }
 
     return prisma.mutation.createPlayer(
       {
