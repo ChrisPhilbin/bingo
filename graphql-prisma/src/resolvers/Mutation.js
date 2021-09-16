@@ -133,9 +133,18 @@ const Mutation = {
     }
 
     if (!game.finished) {
-      updateBoards(game.players, args.data.calledPhrases.toLowerCase(), prisma);
+      const winners = updateBoards(
+        game.players,
+        args.data.calledPhrases.toLowerCase(),
+        prisma
+      );
 
-      let isGameFinished = game.calledPhrases.length === 24 ? true : false;
+      let isGameFinished =
+        winners.length >= 1
+          ? true
+          : false || game.calledPhrases.length === 24
+          ? true
+          : false;
 
       const updatedGame = await prisma.mutation.updateGame(
         {
@@ -175,7 +184,7 @@ const Mutation = {
       throw new Error("Unable to delete game.");
     }
 
-    return prisma.mutation.deletePost(
+    return prisma.mutation.deleteGame(
       {
         where: {
           id: args.id,

@@ -33,6 +33,7 @@ const checkForBingo = (card) => {
 };
 
 const updateBoards = (players, newCalledPhrase, prisma) => {
+  let winners = [];
   players.forEach((player) => {
     let indexMatch = player.board.indexOf(newCalledPhrase);
 
@@ -40,6 +41,10 @@ const updateBoards = (players, newCalledPhrase, prisma) => {
       player.matches[indexMatch] = true;
 
       let bingo = checkForBingo(player.matches);
+
+      if (bingo) {
+        winners.push(player.nickname);
+      }
 
       prisma.mutation.updatePlayer({
         where: {
@@ -53,9 +58,8 @@ const updateBoards = (players, newCalledPhrase, prisma) => {
         },
       });
     }
-
-    console.log(player.matches, "player matches");
   });
+  return winners;
 };
 
 export default updateBoards;
