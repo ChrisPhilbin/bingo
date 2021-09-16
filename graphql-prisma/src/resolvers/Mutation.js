@@ -154,6 +154,9 @@ const Mutation = {
           data: {
             ...args.data,
             finished: isGameFinished,
+            winners: {
+              set: winners,
+            },
             calledPhrases: {
               set: [
                 ...game.calledPhrases,

@@ -1,5 +1,5 @@
 # source: http://localhost:4455/bingo/dev
-# timestamp: Tue Sep 14 2021 22:18:46 GMT-0400 (Eastern Daylight Time)
+# timestamp: Thu Sep 16 2021 07:51:50 GMT-0400 (Eastern Daylight Time)
 
 type AggregateGame {
   count: Int!
@@ -27,6 +27,7 @@ type Game implements Node {
   published: Boolean!
   finished: Boolean!
   calledPhrases: [String!]!
+  winners: [String!]!
   host(where: UserWhereInput): User!
   players(where: PlayerWhereInput, orderBy: PlayerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Player!]
   updatedAt: DateTime!
@@ -53,6 +54,7 @@ input GameCreateInput {
   published: Boolean!
   finished: Boolean!
   calledPhrases: GameCreatecalledPhrasesInput
+  winners: GameCreatewinnersInput
   host: UserCreateOneWithoutGamesInput!
   players: PlayerCreateManyWithoutGameInput
 }
@@ -67,12 +69,17 @@ input GameCreateOneWithoutPlayersInput {
   connect: GameWhereUniqueInput
 }
 
+input GameCreatewinnersInput {
+  set: [String!]
+}
+
 input GameCreateWithoutHostInput {
   slug: String!
   title: String!
   published: Boolean!
   finished: Boolean!
   calledPhrases: GameCreatecalledPhrasesInput
+  winners: GameCreatewinnersInput
   players: PlayerCreateManyWithoutGameInput
 }
 
@@ -82,6 +89,7 @@ input GameCreateWithoutPlayersInput {
   published: Boolean!
   finished: Boolean!
   calledPhrases: GameCreatecalledPhrasesInput
+  winners: GameCreatewinnersInput
   host: UserCreateOneWithoutGamesInput!
 }
 
@@ -118,6 +126,7 @@ type GamePreviousValues {
   published: Boolean!
   finished: Boolean!
   calledPhrases: [String!]!
+  winners: [String!]!
   updatedAt: DateTime!
   createdAt: DateTime!
 }
@@ -171,6 +180,7 @@ input GameUpdateInput {
   published: Boolean
   finished: Boolean
   calledPhrases: GameUpdatecalledPhrasesInput
+  winners: GameUpdatewinnersInput
   host: UserUpdateOneWithoutGamesInput
   players: PlayerUpdateManyWithoutGameInput
 }
@@ -192,12 +202,17 @@ input GameUpdateOneWithoutPlayersInput {
   upsert: GameUpsertWithoutPlayersInput
 }
 
+input GameUpdatewinnersInput {
+  set: [String!]
+}
+
 input GameUpdateWithoutHostDataInput {
   slug: String
   title: String
   published: Boolean
   finished: Boolean
   calledPhrases: GameUpdatecalledPhrasesInput
+  winners: GameUpdatewinnersInput
   players: PlayerUpdateManyWithoutGameInput
 }
 
@@ -207,6 +222,7 @@ input GameUpdateWithoutPlayersDataInput {
   published: Boolean
   finished: Boolean
   calledPhrases: GameUpdatecalledPhrasesInput
+  winners: GameUpdatewinnersInput
   host: UserUpdateOneWithoutGamesInput
 }
 

@@ -15,6 +15,7 @@ type Game {
   published: Boolean!
   finished: Boolean!
   calledPhrases: [String!]!
+  winners: [String!]!
   host: User! @relation(name: "GameToUser", onDelete: SET_NULL)
   players: [Player!]! @relation(name: "GameToPlayer", onDelete: CASCADE)
   updatedAt: DateTime! @updatedAt

@@ -85,7 +85,7 @@ type Game {
   slug: String!
   host: User!
   title: String!
-  winner: Player
+  winners: [String!]!
   players: [Player!]!
   calledPhrases: [String!]!
   finished: Boolean!
