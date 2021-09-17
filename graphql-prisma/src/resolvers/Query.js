@@ -31,7 +31,9 @@ const Query = {
     });
   },
   async games(parent, args, { prisma, request }, info) {
-    const userId = getUserId(request);
+    // const userId = getUserId(request);
+    //temp. getting rid of authentication to make implementing apollo client easier
+    const userId = "cktc4u8rn006h083483j9p5p9";
 
     return await prisma.query.games(
       {
