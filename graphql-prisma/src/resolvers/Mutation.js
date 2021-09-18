@@ -79,6 +79,10 @@ const Mutation = {
     //taking away auth temp. while implementing apollo client on front end
     const slug = await generateGameSlug();
 
+    if (args.data.title === "") {
+      throw new Error("Game title cannot be blank.");
+    }
+
     const game = await prisma.mutation.createGame(
       {
         data: {
