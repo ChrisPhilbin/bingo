@@ -74,7 +74,9 @@ const Mutation = {
     );
   },
   async createGame(parent, args, { prisma, request }, info) {
-    const userId = await getUserId(request);
+    // const userId = await getUserId(request);
+    const userId = "cktc4u8rn006h083483j9p5p9";
+    //taking away auth temp. while implementing apollo client on front end
     const slug = await generateGameSlug();
 
     const game = await prisma.mutation.createGame(

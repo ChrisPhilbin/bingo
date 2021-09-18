@@ -1,5 +1,6 @@
 import React from "react";
 import { useQuery, gql } from "@apollo/client";
+import CreateNewGame from "./CreateNewGame";
 
 const HOST_GAMES_QUERY = gql`
   {
@@ -19,7 +20,8 @@ const HOST_GAMES_QUERY = gql`
 `;
 
 const GameList = () => {
-  const { data } = useQuery(HOST_GAMES_QUERY);
+  const { data, error, loading } = useQuery(HOST_GAMES_QUERY);
+  console.log(loading, "value of loading");
   return (
     <div>
       {data && (
@@ -29,6 +31,8 @@ const GameList = () => {
           ))}
         </>
       )}
+
+      <CreateNewGame />
     </div>
   );
 };
