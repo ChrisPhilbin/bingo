@@ -8,24 +8,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-
-const CREATE_GAME_MUTATION = gql`
-  mutation GameMutation(
-    $title: String!
-    $published: Boolean!
-    $finished: Boolean!
-  ) {
-    createGame(
-      data: { title: $title, published: $published, finished: $finished }
-    ) {
-      id
-      title
-      published
-      finished
-      slug
-    }
-  }
-`;
+import { CREATE_GAME_MUTATION } from "../../mutations/mutations";
 
 const useStyles = makeStyles({});
 
