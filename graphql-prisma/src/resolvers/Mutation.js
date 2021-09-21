@@ -180,7 +180,9 @@ const Mutation = {
     }
   },
   async deleteGame(parent, args, { prisma, request }, info) {
-    const userId = await getUserId(request);
+    // const userId = await getUserId(request);
+    //suspending auth while implementing Apollo front end
+    const userId = "cktc4u8rn006h083483j9p5p9";
 
     const gameExists = await prisma.exists.Game({
       id: args.id,
